@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>花生网文 - 无限流小说生成平台</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8b4513;
+            --secondary-color: #d4af37;
+            --bg-color: #1a1a1a;
+            --text-color: #f5f5dc;
+            --accent-color: #b8860b;
+            --dark-accent: #6b3410;
+            --light-accent: #fbbf24;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%238b4513' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .game-container {
+            background: linear-gradient(145deg, var(--primary-color), var(--bg-color));
+            border: 8px solid var(--secondary-color);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.5), 0 12px 36px rgba(0,0,0,0.6);
+            transition: all 0.3s ease;
+        }
+
+        .game-container:hover {
+            box-shadow: inset 0 0 120px rgba(0,0,0,0.6), 0 15px 40px rgba(0,0,0,0.7);
+        }
+
+        .story-content {
+            line-height: 1.8;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(145deg, var(--primary-color), var(--dark-accent));
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(145deg, var(--dark-accent), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(145deg, var(--secondary-color), var(--accent-color));
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(145deg, var(--accent-color), var(--secondary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-accent {
+            background: linear-gradient(145deg, var(--light-accent), var(--secondary-color));
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-accent:hover {
+            background: linear-gradient(145deg, var(--secondary-color), var(--light-accent));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+        }
+
+        /* 加载动画 */
+        .loader {
+            border: 4px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid var(--secondary-color);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 淡入动画 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 文本打字动画 */
+        .typing {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--secondary-color);
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--secondary-color); }
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 6px;
+            border: 2px solid rgba(0,0,0,0.3);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--light-accent);
+        }
+
+        /* 无限流特定样式 */
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: var(--secondary-color);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .system-panel {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--secondary-color);
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            transition: all 0.3s ease;
+        }
+
+        .system-panel:hover {
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+        }
+
+        .chapter-title {
+            color: var(--secondary-color);
+            border-bottom: 1px double var(--secondary-color);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .world-building {
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            font-style: italic;
+        }
+
+        .msg strong {
+            color: var(--secondary-color);
+        }
+
+        .element-chip {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .element-chip:hover {
+            background: var(--secondary-color);
+            color: black;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        /* 浮动控制按钮 */
+        #floating-controls {
+            position: sticky;
+            bottom: 20px;
+            right: 20px;
+            float: right;
+            z-index: 50;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* 模态框动画 */
+        #intervention-modal {
+            animation: fadeInModal 0.3s ease-in-out;
+        }
+
+        @keyframes fadeInModal {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .system-panel {
+                display: none;
+            }
+            
+            #floating-controls {
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                left: 10px;
+                justify-content: center;
+            }
+            
+            .game-container {
+                border-width: 4px;
+            }
+        }
+
+        /* 状态指示器动画 */
+        .status-indicator {
+            transition: all 0.3s ease;
+        }
+
+        /* 按钮动画 */
+        .btn-animate {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-animate::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%, -50%);
+            transform-origin: 50% 50%;
+        }
+
+        .btn-animate:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 bg-black/80 backdrop-blur-2xl z-50 border-b border-amber-900/30 px-4 py-4 flex justify-between items-center transition-all duration-300">
+        <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 bg-gradient-to-tr from-amber-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg shadow-amber-900/20">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- 花生形状 -->
+                    <path d="M16 6C12 6 8 8 6 12C4 16 4 20 6 24C8 28 12 30 16 30C20 30 24 28 26 24C28 20 28 16 26 12C24 8 20 6 16 6Z" fill="white" fill-opacity="0.9"/>
+                    <!-- 花生纹理 -->
+                    <path d="M16 8C18 8 20 9 21 11C22 13 22 15 21 17C20 19 18 20 16 20C14 20 12 19 11 17C10 15 10 13 11 11C12 9 14 8 16 8Z" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+                    <!-- 网文元素 - 书籍形状 -->
+                    <path d="M14 12L18 12L19 14L17 14L17 18L15 18L15 14L13 14L14 12Z" fill="rgba(255,255,255,0.7)"/>
+                    <!-- 网文元素 - 波浪线 -->
+                    <path d="M13 16C13.5 15.5 14.5 15.5 15 16C15.5 16.5 16.5 16.5 17 16C17.5 15.5 18.5 15.5 19 16" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1"/>
+                </svg>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-600">花生网文</h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <div id="ollama-status" class="text-xs md:text-sm px-3 py-1.5 rounded-full border border-amber-700/50 bg-black/40 flex items-center status-indicator">
+                <span class="w-2 h-2 rounded-full bg-yellow-500 mr-2 animate-pulse"></span>
+                <span>检测中...</span>
+            </div>
+            <button onclick="checkOllamaStatus()" class="text-amber-500 hover:text-amber-300 text-sm transition-colors duration-300">
+                <i class="fa fa-refresh hover:rotate-180 transition-transform duration-500"></i>
+            </button>
+            <div class="h-4 w-[1px] bg-amber-900/50 mx-2 hidden md:block"></div>
+            
+            <!-- 用户认证部分 -->
+            <div id="user-auth" class="flex items-center gap-3">
+                <button onclick="showLoginModal()" class="bg-amber-900/50 hover:bg-amber-800/70 px-4 py-2 rounded-lg text-white text-sm transition-all duration-300 btn-animate">
+                    登录
+                </button>
+                <button onclick="showRegisterModal()" class="bg-amber-700/30 hover:bg-amber-600/50 border border-amber-600/50 px-4 py-2 rounded-lg text-amber-300 text-sm transition-all duration-300 btn-animate">
+                    注册
+                </button>
+            </div>
+            
+            <!-- 已登录用户部分 -->
+            <div id="user-profile" class="flex items-center gap-3 hidden">
+                <div class="text-sm text-amber-300 flex items-center">
+                    <span id="username-display"></span>
+                    <span class="ml-2 px-2 py-0.5 bg-amber-900/50 rounded-full text-xs">
+                        绩分: <span id="points-display">0</span>
+                    </span>
+                </div>
+                <button onclick="logout()" class="text-amber-500 hover:text-amber-300 text-sm transition-colors duration-300">
+                    <i class="fa fa-sign-out"></i>
+                </button>
+            </div>
+            
+            <button onclick="document.getElementById('db-upload').click()" class="bg-amber-900/50 hover:bg-amber-800/70 px-4 py-2 rounded-lg text-white text-sm transition-all duration-300 btn-animate">
+                <i class="fa fa-cloud-upload mr-2"></i>贡献文学因子
+            </button>
+            <input type="file" id="db-upload" accept=".txt,.md" class="hidden" multiple onchange="contributeLiterature(this)">
+            
+            <button onclick="saveNovelMemory()" class="bg-green-800/50 hover:bg-green-700/70 px-4 py-2 rounded-lg text-white text-sm transition-all duration-300 btn-animate">
+                <i class="fa fa-save mr-2"></i>保存记忆
+            </button>
+            <button onclick="loadNovelMemory()" class="bg-blue-800/50 hover:bg-blue-700/70 px-4 py-2 rounded-lg text-white text-sm transition-all duration-300 btn-animate">
+                <i class="fa fa-history mr-2"></i>读取记忆
+            </button>
+        </div>
+    </nav>
+
+    <!-- 系统面板 -->
+    <div class="system-panel fixed right-4 top-20 w-64 p-4 rounded-xl z-40 hidden md:block">
+        <div class="text-amber-500 font-bold border-b border-amber-900/30 pb-2 mb-3 flex items-center">
+            <i class="fa fa-cogs mr-2"></i>小说引擎状态
+        </div>
+        <div class="text-sm mb-2">
+            <div class="flex justify-between mb-1">
+                <span class="text-amber-300">章节：</span>
+                <span id="chapter-count" class="text-white">1</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-amber-300">字数：</span>
+                <span id="word-count" class="text-white">0</span>
+            </div>
+        </div>
+        <div id="plot-stage" class="text-xs text-red-400 mt-2 mb-3 p-2 rounded bg-red-900/20 border border-red-900/30">
+            就绪
+        </div>
+        <div class="mt-2 text-xs text-amber-200 p-2 rounded bg-amber-900/20 border border-amber-900/30 max-h-32 overflow-y-auto" id="memory-display">
+            暂无记忆数据
+        </div>
+        <div class="mt-4 pt-3 border-t border-amber-900/30 text-[10px] text-amber-600 flex justify-between items-center">
+            <span>文学数据库：</span>
+            <span id="db-count" class="text-amber-400 font-bold">0</span>
+        </div>
+    </div>
+
+    <!-- 主内容 -->
+    <main class="container mx-auto mt-24 max-w-4xl">
+        <div class="game-container rounded-xl p-6 md:p-10">
+            <!-- 设置区域 -->
+            <div id="setup-area" class="mb-8 bg-black/40 p-6 rounded-lg border border-amber-900/30 transition-all duration-300">
+                <div class="mb-6 border-b border-amber-900/30 pb-4">
+                    <label class="block text-amber-400 mb-3 font-bold text-lg flex items-center">
+                        <i class="fa fa-file-text mr-2"></i>从现有文本提取元素 (TXT/MD)
+                    </label>
+                    <input type="file" id="file-upload" accept=".txt,.md" class="block w-full text-sm text-amber-100 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-amber-900/50 file:text-amber-200 hover:file:bg-amber-800 transition-all duration-300">
+                    <div id="extracting-status" class="text-xs mt-2 text-amber-400 hidden flex items-center">
+                        <i class="fa fa-spinner fa-spin mr-2"></i>正在解析文本并提取元素...
+                    </div>
+                    <div id="extracted-elements" class="mt-4 flex flex-wrap gap-2"></div>
+                </div>
+
+                <label class="block text-amber-200 mb-3 font-semibold flex items-center">
+                    <i class="fa fa-pencil mr-2"></i>故事引子 (或从上方点击提取出的元素)
+                </label>
+                <textarea id="story-seed" class="w-full bg-black/50 border border-amber-700/50 p-4 text-white rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all duration-300" placeholder="例如：一个神秘的黑衣人走进了咸亨酒店..." rows="4"></textarea>
+                <button id="toggle-engine" onclick="toggleEngine()" class="w-full bg-gradient-to-r from-amber-600 to-amber-800 hover:from-amber-500 hover:to-amber-700 py-4 rounded-lg font-bold text-white transition-all duration-300 transform hover:scale-[1.02] btn-animate">
+                    <i class="fa fa-play-circle mr-2"></i>启动无限流生成
+                </button>
+            </div>
+
+            <!-- 故事内容区域 -->
+            <div class="story-content bg-black/30 rounded-lg p-6 md:p-8 min-h-[500px] border border-amber-900/20">
+                <div id="novel-stage" class="prose prose-invert max-w-none text-lg leading-relaxed">
+                    <div class="text-center py-16">
+                        <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-amber-900/30 border border-amber-700/50">
+                            <i class="fa fa-book text-3xl text-amber-500"></i>
+                        </div>
+                        <h3 class="text-xl text-amber-400 mb-2">花生网文 - 无限流小说生成平台</h3>
+                        <p class="text-amber-200">输入故事引子，点击上方按钮开始生成</p>
+                    </div>
+                </div>
+                <div id="floating-controls" class="hidden">
+                    <button id="pause-btn" onclick="handlePauseRequest()" class="bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 px-6 py-3 rounded-full shadow-lg text-white font-semibold transition-all duration-300 transform hover:scale-[1.05] btn-animate">
+                        <i class="fa fa-pause mr-2"></i>暂停并干预情节
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 干预模态框 -->
+    <div id="intervention-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-[100] hidden">
+        <div class="bg-gradient-to-br from-amber-900/30 to-black/80 border border-amber-500/50 p-8 rounded-xl max-w-lg w-full m-4 shadow-2xl shadow-amber-900/10">
+            <h3 class="text-2xl text-amber-400 mb-6 font-bold flex items-center">
+                <i class="fa fa-lightbulb-o mr-2"></i>你要如何干预接下来的剧情？
+            </h3>
+            <textarea id="intervention-input" class="w-full h-40 bg-black/60 border border-amber-700/50 p-4 text-white rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all duration-300" placeholder="输入你想让主角去做什么，或者发生什么意外..."></textarea>
+            <div class="flex gap-4">
+                <button onclick="submitIntervention()" class="flex-1 bg-gradient-to-r from-amber-600 to-amber-800 hover:from-amber-500 hover:to-amber-700 py-3 rounded-lg font-bold text-white transition-all duration-300 btn-animate">
+                    <i class="fa fa-paper-plane mr-2"></i>确认并继续生成
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登录模态框 -->
+    <div id="login-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-[100] hidden">
+        <div class="bg-gradient-to-br from-amber-900/30 to-black/80 border border-amber-500/50 p-8 rounded-xl max-w-md w-full m-4 shadow-2xl shadow-amber-900/10">
+            <h3 class="text-2xl text-amber-400 mb-6 font-bold flex items-center justify-center">
+                <i class="fa fa-sign-in mr-2"></i>用户登录
+            </h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-amber-300 mb-2">用户名</label>
+                    <input type="text" id="login-username" class="w-full bg-black/60 border border-amber-700/50 p-3 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all duration-300" placeholder="输入用户名">
+                </div>
+                <div>
+                    <label class="block text-sm text-amber-300 mb-2">密码</label>
+                    <input type="password" id="login-password" class="w-full bg-black/60 border border-amber-700/50 p-3 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all duration-300" placeholder="输入密码">
+                </div>
+                <div id="login-error" class="text-red-400 text-sm hidden"></div>
+                <div class="flex gap-4 mt-6">
+                    <button onclick="closeLoginModal()" class="flex-1 bg-black/60 hover:bg-black/80 border border-amber-700/50 py-3 rounded-lg font-bold text-amber-300 transition-all duration-300 btn-animate">
+                        取消
+                    </button>
+                    <button onclick="login()" class="flex-1 bg-gradient-to-r from-amber-600 to-amber-800 hover:from-amber-500 hover:to-amber-700 py-3 rounded-lg font-bold text-white transition-all duration-300 btn-animate">
+                        登录
+                    </button>
+                </div>
+                <div class="text-center text-sm text-amber-400 mt-4">
+                    还没有账号？ <button onclick="switchToRegister()" class="text-amber-300 hover:text-amber-200 underline">立即注册</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册模态框 -->
+    <div id="register-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-[100] hidden">
+        <div class="bg-gradient-to-br from-amber-900/30 to-black/80 border border-amber-500/50 p-8 rounded-xl max-w-md w-full m-4 shadow-2xl shadow-amber-900/10">
+            <h3 class="text-2xl text-amber-400 mb-6 font-bold flex items-center justify-center">
+                <i class="fa fa-user-plus mr-2"></i>用户注册
+            </h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-amber-300 mb-2">用户名</label>
+                    <input type="text" id="register-username" class="w-full bg-black/60 border border-amber-700/50 p-3 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all duration-300" placeholder="输入用户名">
+                </div>
+                <div>
+                    <label class="block text-sm text-amber-300 mb-2">密码</label>
+                    <input type="password" id="register-password" class="w-full bg-black/60 border border-amber-700/50 p-3 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all duration-300" placeholder="输入密码">
+                </div>
+                <div id="register-error" class="text-red-400 text-sm hidden"></div>
+                <div class="flex gap-4 mt-6">
+                    <button onclick="closeRegisterModal()" class="flex-1 bg-black/60 hover:bg-black/80 border border-amber-700/50 py-3 rounded-lg font-bold text-amber-300 transition-all duration-300 btn-animate">
+                        取消
+                    </button>
+                    <button onclick="register()" class="flex-1 bg-gradient-to-r from-amber-600 to-amber-800 hover:from-amber-500 hover:to-amber-700 py-3 rounded-lg font-bold text-white transition-all duration-300 btn-animate">
+                        注册
+                    </button>
+                </div>
+                <div class="text-center text-sm text-amber-400 mt-4">
+                    已有账号？ <button onclick="switchToLogin()" class="text-amber-300 hover:text-amber-200 underline">立即登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let gameState = {
+            infiniteMode: false,
+            isPaused: false,
+            globalChapter: 1,
+            totalWordCount: 0,
+            globalMemory: [],
+            currentChapterContent: "",
+            userInput: ""
+        };
+
+        const MODEL = "deepseek-r1:8b";
+        const API_URL = "http://localhost:11434/api/chat";
+        const SYSTEM_PROMPT = "你是一个沉浸式小说生成引擎。严禁输出任何关于章节的评论、分析、说明或优点介绍。你只能直接输出小说正文或标题本身。";
+
+        // --- IndexedDB 文学资源数据库逻辑 ---
+        const dbName = "LiteratureDB";
+        let db;
+        const request = indexedDB.open(dbName, 1);
+        request.onupgradeneeded = e => {
+            db = e.target.result;
+            if(!db.objectStoreNames.contains("resources")) db.createObjectStore("resources", { autoIncrement: true });
+        };
+        request.onsuccess = e => {
+            db = e.target.result;
+            refreshDBCount();
+        };
+
+        function contributeLiterature(input) {
+            const files = input.files;
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const transaction = db.transaction(["resources"], "readwrite");
+                    transaction.objectStore("resources").add({
+                        name: file.name,
+                        content: e.target.result,
+                        date: new Date().getTime()
+                    });
+                    transaction.oncomplete = () => refreshDBCount();
+                };
+                reader.readAsText(file);
+            });
+            alert(`成功为文学资源数据库贡献了 ${files.length} 个因子。`);
+        }
+
+        function refreshDBCount() {
+            const transaction = db.transaction(["resources"], "readonly");
+            const countRequest = transaction.objectStore("resources").count();
+            countRequest.onsuccess = () => {
+                document.getElementById('db-count').innerText = countRequest.result;
+            };
+        }
+
+        async function getRandomLiteratureSnippet() {
+            return new Promise(resolve => {
+                const transaction = db.transaction(["resources"], "readonly");
+                const store = transaction.objectStore("resources");
+                const request = store.openCursor();
+                let results = [];
+                request.onsuccess = e => {
+                    const cursor = e.target.result;
+                    if(cursor) {
+                        results.push(cursor.value.content);
+                        cursor.continue();
+                    } else {
+                        if(results.length === 0) resolve("");
+                        const randomDoc = results[Math.floor(Math.random() * results.length)];
+                        // 随机抽取一段约 500 字的片段
+                        const start = Math.floor(Math.random() * Math.max(0, randomDoc.length - 500));
+                        resolve(randomDoc.substring(start, start + 500));
+                    }
+                };
+            });
+        }
+        // --- 数据库逻辑结束 ---
+
+        async function checkOllamaStatus() {
+            const statusElement = document.getElementById('ollama-status');
+            try {
+                statusElement.innerHTML = `<span class="w-2 h-2 rounded-full bg-yellow-500 mr-2 animate-pulse"></span>检测中...`;
+                statusElement.className = 'text-xs md:text-sm px-3 py-1.5 rounded-full border border-amber-700/50 bg-black/40 flex items-center status-indicator';
+                
+                const response = await fetch('http://localhost:11434/api/tags');
+                if (response.ok) {
+                    statusElement.innerHTML = `<span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span>Ollama 已连接`;
+                    statusElement.className = 'text-xs md:text-sm px-3 py-1.5 rounded-full border border-green-700/50 bg-green-900/20 flex items-center status-indicator';
+                    return true;
+                } else {
+                    statusElement.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500 mr-2"></span>连接失败`;
+                    statusElement.className = 'text-xs md:text-sm px-3 py-1.5 rounded-full border border-red-700/50 bg-red-900/20 flex items-center status-indicator';
+                    return false;
+                }
+            } catch (error) {
+                statusElement.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500 mr-2"></span>连接失败`;
+                statusElement.className = 'text-xs md:text-sm px-3 py-1.5 rounded-full border border-red-700/50 bg-red-900/20 flex items-center status-indicator';
+                return false;
+            }
+        }
+
+        document.getElementById('file-upload').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                const text = event.target.result.substring(0, 3000);
+                document.getElementById('extracting-status').classList.remove('hidden');
+                const prompt = `分析以下文本片段，提取核心人物、关键环境描述、核心矛盾、特殊物品。只返回关键词，用逗号隔开。文本：${text}`;
+                const result = await fetchLLM(prompt);
+                const elements = result.split(/[,，、\n]/).filter(s => s.trim().length > 1);
+                const container = document.getElementById('extracted-elements');
+                container.innerHTML = '<span class="text-xs w-full text-amber-500 mb-2 block">点击元素加入引子：</span>';
+                elements.forEach(el => {
+                    const span = document.createElement('span');
+                    span.className = 'element-chip px-3 py-1.5 rounded-full text-xs text-amber-200 bg-amber-900/30 m-1';
+                    span.innerText = el.trim();
+                    span.onclick = () => {
+                        const seed = document.getElementById('story-seed');
+                        seed.value += (seed.value ? ' ' : '') + el.trim();
+                        // 添加点击动画
+                        span.classList.add('bg-amber-500', 'text-black');
+                        setTimeout(() => {
+                            span.classList.remove('bg-amber-500', 'text-black');
+                        }, 200);
+                    };
+                    container.appendChild(span);
+                });
+                document.getElementById('extracting-status').classList.add('hidden');
+            };
+            reader.readAsText(file);
+        });
+
+        async function fetchLLM(prompt, isStream = false, onChunk = null) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        model: MODEL,
+                        messages: [{role: "system", content: SYSTEM_PROMPT}, {role: "user", content: prompt}],
+                        stream: isStream
+                    })
+                });
+                if (isStream) {
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    let fullText = "";
+                    while (true) {
+                        const {done, value} = await reader.read();
+                        if (done || gameState.isPaused) break;
+                        const chunk = decoder.decode(value);
+                        const lines = chunk.split('\n');
+                        for (const line of lines) {
+                            if (!line.trim()) continue;
+                            try {
+                                const json = JSON.parse(line);
+                                const content = json.message.content.replace(/<think>[\s\S]*?<\/think>/g, '');
+                                fullText += content;
+                                if (onChunk) onChunk(fullText);
+                            } catch(e) {}
+                        }
+                    }
+                    return fullText;
+                } else {
+                    const data = await response.json();
+                    return data.message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+                }
+            } catch (e) {
+                console.error('Ollama 调用失败:', e);
+                return "生成出错，请确保Ollama已启动。";
+            }
+        }
+
+        async function toggleEngine() {
+            gameState.infiniteMode = !gameState.infiniteMode;
+            if (gameState.infiniteMode) {
+                document.getElementById('setup-area').classList.add('hidden');
+                document.getElementById('floating-controls').classList.remove('hidden');
+                runInfiniteLoop();
+            }
+        }
+
+        function handlePauseRequest() {
+            gameState.isPaused = true;
+            document.getElementById('intervention-modal').classList.remove('hidden');
+        }
+
+        function submitIntervention() {
+            const input = document.getElementById('intervention-input').value;
+            if (input) gameState.userInput = input;
+            document.getElementById('intervention-input').value = "";
+            document.getElementById('intervention-modal').classList.add('hidden');
+            gameState.isPaused = false;
+        }
+
+        function saveNovelMemory() {
+            const memoryData = {
+                chapter: gameState.globalChapter,
+                totalWords: gameState.totalWordCount,
+                history: gameState.globalMemory,
+                lastContent: document.getElementById('novel-stage').innerHTML
+            };
+            localStorage.setItem('peanut_novel_memory', JSON.stringify(memoryData));
+            alert('小说记忆已存盘。');
+        }
+
+        function loadNovelMemory() {
+            const saved = localStorage.getItem('peanut_novel_memory');
+            if (!saved) return alert('未找到历史记忆。');
+            const data = JSON.parse(saved);
+            gameState.globalChapter = data.chapter;
+            gameState.totalWordCount = data.totalWords;
+            gameState.globalMemory = data.history;
+            document.getElementById('novel-stage').innerHTML = data.lastContent;
+            updateStats();
+            alert('记忆读取成功。');
+        }
+
+        async function runInfiniteLoop() {
+            while (gameState.infiniteMode) {
+                if (!gameState.isPaused) {
+                    await startChapter();
+                    gameState.globalChapter++;
+                    updateStats();
+                    await new Promise(r => setTimeout(r, 2000));
+                } else {
+                    await new Promise(r => setTimeout(r, 1000));
+                }
+            }
+        }
+
+        async function startChapter() {
+            const seed = document.getElementById('story-seed').value || "新的冒险开始了";
+            // 蚁群算法逻辑应用：从文学数据库随机抽取因子作为启发信息
+            const litFactor = await getRandomLiteratureSnippet();
+            
+            const plotStage = document.getElementById('plot-stage');
+            plotStage.innerText = "状态：蚂蚁寻路中...";
+            plotStage.className = 'text-xs text-blue-400 mt-2 mb-3 p-2 rounded bg-blue-900/20 border border-blue-900/30';
+            
+            const branchPrompt = `根据历史：${gameState.globalMemory.join(';')}。当前引子：${seed}。${litFactor ? '参考文学因子风格：' + litFactor : ''}。规划3个不同走向，用|分隔。`;
+            const branchesRaw = await fetchLLM(branchPrompt);
+            const branches = branchesRaw.split('|').map(b => b.trim()).filter(b => b);
+
+            let bestBranch = branches[0];
+            if (branches.length > 1) {
+                const evalPrompt = `从以下走向中选出逻辑最连贯且精彩的一个并只返回内容：\n${branches.join('\n')}`;
+                bestBranch = await fetchLLM(evalPrompt);
+            }
+
+            plotStage.innerText = "状态：生成中...";
+            plotStage.className = 'text-xs text-green-400 mt-2 mb-3 p-2 rounded bg-green-900/20 border border-green-900/30';
+            
+            const titlePrompt = `续写章节标题。上下文：${gameState.globalMemory.slice(-2)}。走向：${bestBranch}。只返回"第X章：XXX"格式。`;
+            const title = await fetchLLM(titlePrompt);
+            renderElement('h2', 'chapter-title text-2xl font-bold mt-8 mb-4 text-center pb-2', title);
+
+            const plotPrompt = `续写小说正文。摘要：${gameState.globalMemory.join(';')}。情节：${bestBranch}。${gameState.userInput ? '干预：' + gameState.userInput : ''}。直接输出正文。`;
+            const content = await fetchLLM(plotPrompt, true, renderBlock('story-content p-2 mb-4'));
+            
+            gameState.globalMemory.push(content.substring(0, 100) + "...");
+            if (gameState.globalMemory.length > 5) gameState.globalMemory.shift();
+            gameState.userInput = "";
+            
+            plotStage.innerText = "状态：完成";
+            plotStage.className = 'text-xs text-amber-400 mt-2 mb-3 p-2 rounded bg-amber-900/20 border border-amber-900/30';
+        }
+
+        function renderElement(tag, className, text) {
+            const el = document.createElement(tag);
+            el.className = className;
+            el.innerText = text;
+            document.getElementById('novel-stage').appendChild(el);
+            window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+        }
+
+        function renderBlock(className) {
+            const div = document.createElement('div');
+            div.className = className + " mb-4";
+            div.innerHTML = `<span class="content"></span><span class="cursor"></span>`;
+            document.getElementById('novel-stage').appendChild(div);
+            const span = div.querySelector('.content');
+            return (text) => {
+                span.innerText = text;
+                window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+                gameState.totalWordCount++;
+            };
+        }
+
+        function updateStats() {
+            document.getElementById('chapter-count').innerText = gameState.globalChapter;
+            document.getElementById('word-count').innerText = gameState.totalWordCount;
+            document.getElementById('memory-display').innerText = "最新记忆：" + (gameState.globalMemory[gameState.globalMemory.length-1] || "空");
+        }
+
+        // 页面加载完成后初始化
+        window.onload = function() {
+            checkOllamaStatus();
+            // 检查用户登录状态
+            checkUserStatus();
+            // 添加淡入动画
+            setTimeout(() => {
+                document.querySelector('.game-container').classList.add('fade-in', 'visible');
+            }, 100);
+        };
+        
+        // --- 用户认证和绩分系统 ---  
+        
+        // 显示登录模态框
+        function showLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+        
+        // 隐藏登录模态框
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+        
+        // 显示注册模态框
+        function showRegisterModal() {
+            document.getElementById('register-modal').classList.remove('hidden');
+        }
+        
+        // 隐藏注册模态框
+        function closeRegisterModal() {
+            document.getElementById('register-modal').classList.add('hidden');
+        }
+        
+        // 切换到注册
+        function switchToRegister() {
+            closeLoginModal();
+            setTimeout(showRegisterModal, 100);
+        }
+        
+        // 切换到登录
+        function switchToLogin() {
+            closeRegisterModal();
+            setTimeout(showLoginModal, 100);
+        }
+        
+        // 用户注册
+        async function register() {
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            const errorElement = document.getElementById('register-error');
+            
+            if (!username || !password) {
+                errorElement.textContent = '用户名和密码不能为空';
+                errorElement.classList.remove('hidden');
+                return;
+            }
+            
+            try {
+                // 确保使用正确的API地址
+                const apiUrl = 'http://localhost:3000/api/auth/register';
+                console.log('发送注册请求到:', apiUrl);
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                console.log('注册请求响应状态:', response.status);
+                
+                const data = await response.json();
+                console.log('注册请求响应数据:', data);
+                
+                if (data.success) {
+                    // 保存token到本地存储
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    // 更新UI
+                    updateUserUI(data.user);
+                    closeRegisterModal();
+                    
+                    // 显示成功消息
+                    showNotification('注册成功！欢迎加入花生网文', 'success');
+                } else {
+                    errorElement.textContent = data.error || '注册失败';
+                    errorElement.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('注册请求错误:', error);
+                errorElement.textContent = '注册失败，请稍后重试: ' + error.message;
+                errorElement.classList.remove('hidden');
+            }
+        }
+        
+        // 用户登录
+        async function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const errorElement = document.getElementById('login-error');
+            
+            if (!username || !password) {
+                errorElement.textContent = '用户名和密码不能为空';
+                errorElement.classList.remove('hidden');
+                return;
+            }
+            
+            try {
+                // 确保使用正确的API地址
+                const apiUrl = 'http://localhost:3000/api/auth/login';
+                console.log('发送登录请求到:', apiUrl);
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                console.log('登录请求响应状态:', response.status);
+                
+                const data = await response.json();
+                console.log('登录请求响应数据:', data);
+                
+                if (data.success) {
+                    // 保存token到本地存储
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    // 更新UI
+                    updateUserUI(data.user);
+                    closeLoginModal();
+                    
+                    // 显示成功消息
+                    showNotification('登录成功！欢迎回来', 'success');
+                } else {
+                    errorElement.textContent = data.error || '登录失败';
+                    errorElement.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('登录请求错误:', error);
+                errorElement.textContent = '登录失败，请稍后重试: ' + error.message;
+                errorElement.classList.remove('hidden');
+            }
+        }
+        
+        // 用户登出
+        function logout() {
+            // 清除本地存储
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            
+            // 更新UI
+            document.getElementById('user-auth').classList.remove('hidden');
+            document.getElementById('user-profile').classList.add('hidden');
+            
+            // 显示成功消息
+            showNotification('登出成功', 'success');
+        }
+        
+        // 检查用户登录状态
+        function checkUserStatus() {
+            const token = localStorage.getItem('token');
+            const userData = localStorage.getItem('user');
+            
+            if (token && userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    updateUserUI(user);
+                } catch (error) {
+                    // 清除无效数据
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                }
+            }
+        }
+        
+        // 更新用户UI
+        function updateUserUI(user) {
+            document.getElementById('user-auth').classList.add('hidden');
+            document.getElementById('user-profile').classList.remove('hidden');
+            document.getElementById('username-display').textContent = user.username;
+            document.getElementById('points-display').textContent = user.points;
+        }
+        
+        // 显示通知
+        function showNotification(message, type = 'info') {
+            // 创建通知元素
+            const notification = document.createElement('div');
+            notification.className = `fixed top-20 right-4 p-4 rounded-lg shadow-lg transform transition-all duration-500 translate-x-full z-50 ${type === 'success' ? 'bg-green-900/80 text-green-200 border border-green-700/50' : 'bg-amber-900/80 text-amber-200 border border-amber-700/50'}`;
+            notification.textContent = message;
+            
+            // 添加到页面
+            document.body.appendChild(notification);
+            
+            // 显示通知
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 10);
+            
+            // 3秒后隐藏通知
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+        
+        // 贡献文学因子
+        async function contributeLiteraryFactor(title, content, type = '', tags = '') {
+            const token = localStorage.getItem('token');
+            
+            if (!token) {
+                showNotification('请先登录以贡献文学因子', 'info');
+                showLoginModal();
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/literary-factors', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ title, content, type, tags })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    
+                    // 更新用户绩分
+                    const userData = localStorage.getItem('user');
+                    if (userData) {
+                        const user = JSON.parse(userData);
+                        user.points += 1;
+                        localStorage.setItem('user', JSON.stringify(user));
+                        document.getElementById('points-display').textContent = user.points;
+                    }
+                } else {
+                    showNotification('贡献文学因子失败: ' + data.error, 'info');
+                }
+            } catch (error) {
+                showNotification('贡献文学因子失败，请稍后重试', 'info');
+            }
+        }
+        
+        // 生成新小说并保存为文学因子
+        async function generateAndSaveLiteraryFactor(title, content, type = '', tags = '') {
+            const token = localStorage.getItem('token');
+            
+            if (!token) {
+                showNotification('请先登录以保存文学因子', 'info');
+                showLoginModal();
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/literary-factors/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ title, content, type, tags })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    
+                    // 更新用户绩分
+                    const userData = localStorage.getItem('user');
+                    if (userData) {
+                        const user = JSON.parse(userData);
+                        user.points += 2;
+                        localStorage.setItem('user', JSON.stringify(user));
+                        document.getElementById('points-display').textContent = user.points;
+                    }
+                } else {
+                    showNotification('保存文学因子失败: ' + data.error, 'info');
+                }
+            } catch (error) {
+                showNotification('保存文学因子失败，请稍后重试', 'info');
+            }
+        }
+        
+        // 使用文学因子
+        async function useLiteraryFactor(factorId) {
+            const token = localStorage.getItem('token');
+            
+            if (!token) {
+                showNotification('请先登录以使用文学因子', 'info');
+                showLoginModal();
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/literary-factors/use', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ factorId })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    
+                    // 更新用户绩分
+                    const userData = localStorage.getItem('user');
+                    if (userData) {
+                        const user = JSON.parse(userData);
+                        user.points -= 5;
+                        localStorage.setItem('user', JSON.stringify(user));
+                        document.getElementById('points-display').textContent = user.points;
+                    }
+                    
+                    return data.factor;
+                } else {
+                    showNotification('使用文学因子失败: ' + data.error, 'info');
+                    return null;
+                }
+            } catch (error) {
+                showNotification('使用文学因子失败，请稍后重试', 'info');
+                return null;
+            }
+        }
+        
+        // --- 文学因子上传处理 ---  
+        document.getElementById('db-upload').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                const content = event.target.result;
+                
+                // 提取标题（使用文件名或内容首行）
+                const fileName = file.name.replace(/\.[^/.]+$/, "");
+                const title = fileName || '未命名文学因子';
+                
+                // 贡献文学因子
+                await contributeLiteraryFactor(title, content);
+            };
+            reader.readAsText(file);
+        });
+        
+        // --- 生成小说后保存为文学因子 ---  
+        // 修改保存小说的函数，集成绩分系统
+        async function saveNovel() {
+            const content = document.getElementById('story-content').textContent;
+            if (!content.trim()) return;
+            
+            const title = "小说_" + new Date().toLocaleString();
+            
+            try {
+                const response = await fetch('/api/save/novel', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title, content })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    // 保存为文学因子并奖励绩分
+                    await generateAndSaveLiteraryFactor(title, content, 'novel');
+                    
+                    // 下载文件
+                    const link = document.createElement('a');
+                    link.href = data.filePath;
+                    link.download = title + '.txt';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            } catch (error) {
+                console.error('保存小说失败:', error);
+            }
+        }
+        
+    </script>
+</body>
+</html>

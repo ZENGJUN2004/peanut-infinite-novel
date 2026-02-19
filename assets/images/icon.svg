@@ -1,0 +1,29 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景渐变 -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFB74D"/>
+      <stop offset="100%" stop-color="#FF7043"/>
+    </linearGradient>
+    <linearGradient id="text-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#FFF3E0"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- 花生形状 -->
+  <ellipse cx="128" cy="128" rx="90" ry="60" fill="url(#bg-gradient)"/>
+  <ellipse cx="128" cy="128" rx="85" ry="55" fill="none" stroke="#E65100" stroke-width="2"/>
+  
+  <!-- 花生纹理 -->
+  <ellipse cx="128" cy="128" rx="40" ry="30" fill="none" stroke="#E65100" stroke-width="1" opacity="0.5"/>
+  
+  <!-- 书籍图标 -->
+  <rect x="90" y="100" width="76" height="50" rx="4" fill="#FFFFFF" opacity="0.8"/>
+  <rect x="90" y="100" width="76" height="50" rx="4" fill="none" stroke="#E65100" stroke-width="1"/>
+  <line x1="90" y1="115" x2="166" y2="115" stroke="#E65100" stroke-width="1"/>
+  
+  <!-- 文字 -->
+  <text x="128" y="180" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="url(#text-gradient)">花生网文</text>
+  <text x="128" y="205" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#FFF3E0">无限流小说</text>
+</svg>

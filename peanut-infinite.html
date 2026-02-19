@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>花生网文 - 无限流小说生成平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary-color: #8b4513; --secondary-color: #d4af37; --bg-color: #1a1a1a; --text-color: #f5f5dc; }
+        body { font-family: 'Noto Sans SC', sans-serif; background-color: var(--bg-color); color: var(--text-color); }
+        .game-container { background: linear-gradient(145deg, var(--primary-color), var(--bg-color)); border: 8px solid var(--secondary-color); position: relative; }
+        .chapter-title { color: var(--secondary-color); border-bottom: 1px double var(--secondary-color); }
+        .cursor { display: inline-block; width: 2px; height: 1.2em; background: var(--secondary-color); animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        #floating-controls { position: sticky; bottom: 20px; right: 20px; float: right; z-index: 50; display: flex; gap: 10px; }
+        .system-panel { background: rgba(0, 0, 0, 0.8); border: 1px solid var(--secondary-color); }
+        .element-chip { cursor: pointer; transition: all 0.2s; border: 1px solid rgba(212, 175, 55, 0.3); }
+        .element-chip:hover { background: var(--secondary-color); color: black; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <nav class="fixed top-0 left-0 right-0 bg-black/80 backdrop-blur-2xl z-50 border-b border-amber-900/30 px-4 py-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-amber-500">花生网文</h1>
+        <div class="flex items-center gap-4">
+            <div id="ollama-status" class="text-xs px-3 py-1 rounded border border-amber-700/50 bg-black/40 flex items-center">
+                <span class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>检测中...
+            </div>
+            <button onclick="checkOllamaStatus()" class="text-amber-500 hover:text-amber-300 text-sm"><i class="fa fa-refresh"></i></button>
+            <div class="h-4 w-[1px] bg-amber-900/50 mx-2"></div>
+            
+            <button onclick="document.getElementById('db-upload').click()" class="bg-amber-800 hover:bg-amber-700 px-4 py-2 rounded text-white text-sm">
+                <i class="fa fa-cloud-upload mr-2"></i>贡献文学因子
+            </button>
+            <input type="file" id="db-upload" accept=".txt,.md" class="hidden" multiple onchange="contributeLiterature(this)">
+            
+            <button onclick="saveNovelMemory()" class="bg-green-700 px-4 py-2 rounded text-white text-sm"><i class="fa fa-save mr-2"></i>保存记忆</button>
+            <button onclick="loadNovelMemory()" class="bg-blue-700 px-4 py-2 rounded text-white text-sm"><i class="fa fa-history mr-2"></i>读取记忆</button>
+        </div>
+    </nav>
+
+    <div class="system-panel fixed right-4 top-20 w-64 p-4 rounded-lg z-40 hidden md:block">
+        <div class="text-amber-500 font-bold border-b border-amber-900/30 mb-2">【小说引擎状态】</div>
+        <div class="text-sm">章节：<span id="chapter-count">1</span> | 字数：<span id="word-count">0</span></div>
+        <div id="plot-stage" class="text-xs text-red-400 mt-2">就绪</div>
+        <div class="mt-2 text-xs text-amber-200" id="memory-display">暂无记忆数据</div>
+        <div class="mt-4 pt-2 border-t border-amber-900/30 text-[10px] text-amber-600">
+            文学数据库：<span id="db-count">0</span> 篇已入库
+        </div>
+    </div>
+
+    <main class="container mx-auto mt-20 max-w-4xl">
+        <div class="game-container rounded-xl p-6 md:p-10">
+            <div id="setup-area" class="mb-6 bg-black/40 p-6 rounded-lg border border-amber-900/30">
+                <div class="mb-6 border-b border-amber-900/30 pb-4">
+                    <label class="block text-amber-500 mb-2 font-bold"><i class="fa fa-file-text mr-2"></i>从现有文本提取元素 (TXT/MD)</label>
+                    <input type="file" id="file-upload" accept=".txt,.md" class="block w-full text-sm text-amber-100 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-amber-900/50 file:text-amber-200 hover:file:bg-amber-800">
+                    <div id="extracting-status" class="text-xs mt-2 text-amber-400 hidden">正在解析文本并提取元素...</div>
+                    <div id="extracted-elements" class="mt-4 flex flex-wrap gap-2"></div>
+                </div>
+
+                <label class="block text-amber-100 mb-2">故事引子 (或从上方点击提取出的元素)</label>
+                <textarea id="story-seed" class="w-full bg-black/50 border border-amber-700 p-3 text-white rounded mb-4" placeholder="例如：一个神秘的黑衣人走进了咸亨酒店..."></textarea>
+                <button id="toggle-engine" onclick="toggleEngine()" class="w-full bg-amber-600 hover:bg-amber-500 py-3 rounded font-bold text-white transition-all">启动无限流生成</button>
+            </div>
+
+            <div class="story-content bg-black/20 rounded-lg p-6 min-h-[400px]">
+                <div id="novel-stage" class="prose prose-invert max-w-none text-lg leading-relaxed"></div>
+                <div id="floating-controls" class="hidden">
+                    <button id="pause-btn" onclick="handlePauseRequest()" class="bg-red-600 hover:bg-red-500 p-4 rounded-full shadow-lg text-white">
+                        <i class="fa fa-pause"></i> 暂停并干预情节
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="intervention-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-[100] hidden">
+        <div class="bg-amber-900/20 border border-amber-500 p-8 rounded-xl max-w-lg w-full m-4">
+            <h3 class="text-xl text-amber-500 mb-4 font-bold">你要如何干预接下来的剧情？</h3>
+            <textarea id="intervention-input" class="w-full h-32 bg-black/60 border border-amber-700 p-3 text-white rounded mb-4" placeholder="输入你想让主角去做什么，或者发生什么意外..."></textarea>
+            <div class="flex gap-4">
+                <button onclick="submitIntervention()" class="flex-1 bg-amber-600 py-3 rounded font-bold">确认并继续生成</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let gameState = {
+            infiniteMode: false,
+            isPaused: false,
+            globalChapter: 1,
+            totalWordCount: 0,
+            globalMemory: [],
+            currentChapterContent: "",
+            userInput: ""
+        };
+
+        const MODEL = "deepseek-r1:8b";
+        const API_URL = "http://localhost:11434/api/chat";
+        const SYSTEM_PROMPT = "你是一个沉浸式小说生成引擎。严禁输出任何关于章节的评论、分析、说明或优点介绍。你只能直接输出小说正文或标题本身。";
+
+        // --- IndexedDB 文学资源数据库逻辑 ---
+        const dbName = "LiteratureDB";
+        let db;
+        const request = indexedDB.open(dbName, 1);
+        request.onupgradeneeded = e => {
+            db = e.target.result;
+            if(!db.objectStoreNames.contains("resources")) db.createObjectStore("resources", { autoIncrement: true });
+        };
+        request.onsuccess = e => {
+            db = e.target.result;
+            refreshDBCount();
+        };
+
+        function contributeLiterature(input) {
+            const files = input.files;
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const transaction = db.transaction(["resources"], "readwrite");
+                    transaction.objectStore("resources").add({
+                        name: file.name,
+                        content: e.target.result,
+                        date: new Date().getTime()
+                    });
+                    transaction.oncomplete = () => refreshDBCount();
+                };
+                reader.readAsText(file);
+            });
+            alert(`成功为文学资源数据库贡献了 ${files.length} 个因子。`);
+        }
+
+        function refreshDBCount() {
+            const transaction = db.transaction(["resources"], "readonly");
+            const countRequest = transaction.objectStore("resources").count();
+            countRequest.onsuccess = () => {
+                document.getElementById('db-count').innerText = countRequest.result;
+            };
+        }
+
+        async function getRandomLiteratureSnippet() {
+            return new Promise(resolve => {
+                const transaction = db.transaction(["resources"], "readonly");
+                const store = transaction.objectStore("resources");
+                const request = store.openCursor();
+                let results = [];
+                request.onsuccess = e => {
+                    const cursor = e.target.result;
+                    if(cursor) {
+                        results.push(cursor.value.content);
+                        cursor.continue();
+                    } else {
+                        if(results.length === 0) resolve("");
+                        const randomDoc = results[Math.floor(Math.random() * results.length)];
+                        // 随机抽取一段约 500 字的片段
+                        const start = Math.floor(Math.random() * Math.max(0, randomDoc.length - 500));
+                        resolve(randomDoc.substring(start, start + 500));
+                    }
+                };
+            });
+        }
+        // --- 数据库逻辑结束 ---
+
+        async function checkOllamaStatus() {
+            const statusElement = document.getElementById('ollama-status');
+            try {
+                const response = await fetch('http://localhost:11434/api/tags');
+                if (response.ok) {
+                    statusElement.innerHTML = `<span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span>Ollama 已连接`;
+                    return true;
+                }
+            } catch (error) {
+                statusElement.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500 mr-2"></span>连接失败`;
+                return false;
+            }
+        }
+
+        document.getElementById('file-upload').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                const text = event.target.result.substring(0, 3000);
+                document.getElementById('extracting-status').classList.remove('hidden');
+                const prompt = `分析以下文本片段，提取核心人物、关键环境描述、核心矛盾、特殊物品。只返回关键词，用逗号隔开。文本：${text}`;
+                const result = await fetchLLM(prompt);
+                const elements = result.split(/[,，、\n]/).filter(s => s.trim().length > 1);
+                const container = document.getElementById('extracted-elements');
+                container.innerHTML = '<span class="text-xs w-full text-amber-500 mb-1">点击元素加入引子：</span>';
+                elements.forEach(el => {
+                    const span = document.createElement('span');
+                    span.className = 'element-chip px-2 py-1 rounded text-xs text-amber-200 bg-amber-900/30';
+                    span.innerText = el.trim();
+                    span.onclick = () => {
+                        const seed = document.getElementById('story-seed');
+                        seed.value += (seed.value ? ' ' : '') + el.trim();
+                    };
+                    container.appendChild(span);
+                });
+                document.getElementById('extracting-status').classList.add('hidden');
+            };
+            reader.readAsText(file);
+        });
+
+        async function fetchLLM(prompt, isStream = false, onChunk = null) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        model: MODEL,
+                        messages: [{role: "system", content: SYSTEM_PROMPT}, {role: "user", content: prompt}],
+                        stream: isStream
+                    })
+                });
+                if (isStream) {
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    let fullText = "";
+                    while (true) {
+                        const {done, value} = await reader.read();
+                        if (done || gameState.isPaused) break;
+                        const chunk = decoder.decode(value);
+                        const lines = chunk.split('\n');
+                        for (const line of lines) {
+                            if (!line.trim()) continue;
+                            try {
+                                const json = JSON.parse(line);
+                                const content = json.message.content.replace(/<think>[\s\S]*?<\/think>/g, '');
+                                fullText += content;
+                                if (onChunk) onChunk(fullText);
+                            } catch(e) {}
+                        }
+                    }
+                    return fullText;
+                } else {
+                    const data = await response.json();
+                    return data.message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+                }
+            } catch (e) { return "生成出错，请确保Ollama已启动。"; }
+        }
+
+        async function toggleEngine() {
+            gameState.infiniteMode = !gameState.infiniteMode;
+            if (gameState.infiniteMode) {
+                document.getElementById('setup-area').classList.add('hidden');
+                document.getElementById('floating-controls').classList.remove('hidden');
+                runInfiniteLoop();
+            }
+        }
+
+        function handlePauseRequest() {
+            gameState.isPaused = true;
+            document.getElementById('intervention-modal').classList.remove('hidden');
+        }
+
+        function submitIntervention() {
+            const input = document.getElementById('intervention-input').value;
+            if (input) gameState.userInput = input;
+            document.getElementById('intervention-input').value = "";
+            document.getElementById('intervention-modal').classList.add('hidden');
+            gameState.isPaused = false;
+        }
+
+        function saveNovelMemory() {
+            const memoryData = {
+                chapter: gameState.globalChapter,
+                totalWords: gameState.totalWordCount,
+                history: gameState.globalMemory,
+                lastContent: document.getElementById('novel-stage').innerHTML
+            };
+            localStorage.setItem('peanut_novel_memory', JSON.stringify(memoryData));
+            alert('小说记忆已存盘。');
+        }
+
+        function loadNovelMemory() {
+            const saved = localStorage.getItem('peanut_novel_memory');
+            if (!saved) return alert('未找到历史记忆。');
+            const data = JSON.parse(saved);
+            gameState.globalChapter = data.chapter;
+            gameState.totalWordCount = data.totalWords;
+            gameState.globalMemory = data.history;
+            document.getElementById('novel-stage').innerHTML = data.lastContent;
+            updateStats();
+            alert('记忆读取成功。');
+        }
+
+        async function runInfiniteLoop() {
+            while (gameState.infiniteMode) {
+                if (!gameState.isPaused) {
+                    await startChapter();
+                    gameState.globalChapter++;
+                    updateStats();
+                    await new Promise(r => setTimeout(r, 2000));
+                } else {
+                    await new Promise(r => setTimeout(r, 1000));
+                }
+            }
+        }
+
+        async function startChapter() {
+            const seed = document.getElementById('story-seed').value || "新的冒险开始了";
+            // 蚁群算法逻辑应用：从文学数据库随机抽取因子作为启发信息
+            const litFactor = await getRandomLiteratureSnippet();
+            
+            document.getElementById('plot-stage').innerText = "状态：蚂蚁寻路中...";
+            const branchPrompt = `根据历史：${gameState.globalMemory.join(';')}。当前引子：${seed}。${litFactor ? '参考文学因子风格：' + litFactor : ''}。规划3个不同走向，用|分隔。`;
+            const branchesRaw = await fetchLLM(branchPrompt);
+            const branches = branchesRaw.split('|').map(b => b.trim()).filter(b => b);
+
+            let bestBranch = branches[0];
+            if (branches.length > 1) {
+                const evalPrompt = `从以下走向中选出逻辑最连贯且精彩的一个并只返回内容：\n${branches.join('\n')}`;
+                bestBranch = await fetchLLM(evalPrompt);
+            }
+
+            document.getElementById('plot-stage').innerText = "状态：生成中...";
+            const titlePrompt = `续写章节标题。上下文：${gameState.globalMemory.slice(-2)}。走向：${bestBranch}。只返回“第X章：XXX”格式。`;
+            const title = await fetchLLM(titlePrompt);
+            renderElement('h2', 'chapter-title text-2xl font-bold mt-8 mb-4', title);
+
+            const plotPrompt = `续写小说正文。摘要：${gameState.globalMemory.join(';')}。情节：${bestBranch}。${gameState.userInput ? '干预：' + gameState.userInput : ''}。直接输出正文。`;
+            const content = await fetchLLM(plotPrompt, true, renderBlock('story-content p-2'));
+            
+            gameState.globalMemory.push(content.substring(0, 100) + "...");
+            if (gameState.globalMemory.length > 5) gameState.globalMemory.shift();
+            gameState.userInput = "";
+        }
+
+        function renderElement(tag, className, text) {
+            const el = document.createElement(tag);
+            el.className = className;
+            el.innerText = text;
+            document.getElementById('novel-stage').appendChild(el);
+            window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+        }
+
+        function renderBlock(className) {
+            const div = document.createElement('div');
+            div.className = className + " mb-4";
+            div.innerHTML = `<span class="content"></span><span class="cursor"></span>`;
+            document.getElementById('novel-stage').appendChild(div);
+            const span = div.querySelector('.content');
+            return (text) => {
+                span.innerText = text;
+                window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+                gameState.totalWordCount++;
+            };
+        }
+
+        function updateStats() {
+            document.getElementById('chapter-count').innerText = gameState.globalChapter;
+            document.getElementById('word-count').innerText = gameState.totalWordCount;
+            document.getElementById('memory-display').innerText = "最新记忆：" + (gameState.globalMemory[gameState.globalMemory.length-1] || "空");
+        }
+
+        window.onload = checkOllamaStatus;
+    </script>
+</body>
+</html>
