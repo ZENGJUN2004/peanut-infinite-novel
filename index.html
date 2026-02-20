@@ -300,69 +300,72 @@
                     <path d="M13 16C13.5 15.5 14.5 15.5 15 16C15.5 16.5 16.5 16.5 17 16C17.5 15.5 18.5 15.5 19 16" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1"/>
                 </svg>
             </div>
-            <h1 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-600">花生网文</h1>
+            <h1 class="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-600">花生网文</h1>
         </div>
-        <div class="flex items-center gap-4">
-            <div id="ollama-status" class="text-xs md:text-sm px-3 py-1.5 rounded-full border border-amber-700/50 bg-black/40 flex items-center status-indicator">
+        <div class="flex items-center gap-2">
+            <div id="ollama-status" class="text-xs px-2 py-1 rounded-full border border-amber-700/50 bg-black/40 flex items-center status-indicator">
                 <span class="w-2 h-2 rounded-full bg-yellow-500 mr-2 animate-pulse"></span>
                 <span>检测中...</span>
             </div>
-            <button onclick="checkOllamaStatus()" class="text-amber-500 hover:text-amber-300 text-sm transition-colors duration-300">
+            <button onclick="checkOllamaStatus()" class="text-amber-500 hover:text-amber-300 text-xs transition-colors duration-300">
                 <i class="fa fa-refresh hover:rotate-180 transition-transform duration-500"></i>
             </button>
-            <div class="h-4 w-[1px] bg-amber-900/50 mx-2 hidden md:block"></div>
+            <div class="h-4 w-[1px] bg-amber-900/50 mx-1 hidden md:block"></div>
             
             <div class="relative" id="silicon-api-section">
-                <input type="password" id="silicon-api-key" placeholder="硅基流动API Key" class="text-xs md:text-sm px-3 py-1.5 rounded-full border border-amber-700/50 bg-black/40 text-white focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-all duration-300 pr-40">
+                <input type="password" id="silicon-api-key" placeholder="硅基流动API Key" class="text-xs px-2 py-1 rounded-full border border-amber-700/50 bg-black/40 text-white focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-all duration-300 pr-32">
                 <div class="absolute right-1 top-1/2 transform -translate-y-1/2 flex gap-1">
-                    <button onclick="testSiliconApiKey()" class="text-xs md:text-sm px-2 py-0.5 rounded-full bg-blue-900/50 hover:bg-blue-800/70 text-white transition-colors duration-300">
+                    <button onclick="testSiliconApiKey()" class="text-xs px-2 py-0.5 rounded-full bg-blue-900/50 hover:bg-blue-800/70 text-white transition-colors duration-300">
                         测试
                     </button>
-                    <button onclick="saveSiliconApiKey()" class="text-xs md:text-sm px-2 py-0.5 rounded-full bg-amber-900/50 hover:bg-amber-800/70 text-white transition-colors duration-300">
+                    <button onclick="saveSiliconApiKey()" class="text-xs px-2 py-0.5 rounded-full bg-amber-900/50 hover:bg-amber-800/70 text-white transition-colors duration-300">
                         保存
                     </button>
                 </div>
             </div>
-            <button onclick="toggleSiliconApiInput()" class="text-amber-500 hover:text-amber-300 text-sm transition-colors duration-300">
+            <button onclick="toggleSiliconApiInput()" class="text-amber-500 hover:text-amber-300 text-xs transition-colors duration-300">
                 <i class="fa fa-key"></i>
             </button>
-            <div id="silicon-api-status" class="text-xs md:text-sm px-3 py-1.5 rounded-full border border-amber-700/50 bg-black/40 flex items-center status-indicator">
+            <div id="silicon-api-status" class="text-xs px-2 py-1 rounded-full border border-amber-700/50 bg-black/40 flex items-center status-indicator">
                 <span class="w-2 h-2 rounded-full bg-yellow-500 mr-2 animate-pulse"></span>
                 <span>未测试</span>
             </div>
-            <div class="h-4 w-[1px] bg-amber-900/50 mx-2 hidden md:block"></div>
+            <div class="h-4 w-[1px] bg-amber-900/50 mx-1 hidden md:block"></div>
             
-            <div id="user-auth" class="flex items-center gap-3">
-                <button onclick="showLoginModal()" class="bg-amber-900/50 hover:bg-amber-800/70 px-4 py-2 rounded-lg text-white text-sm transition-all duration-300 btn-animate">
+            <div id="user-auth" class="flex items-center gap-2">
+                <button onclick="showLoginModal()" class="bg-amber-900/50 hover:bg-amber-800/70 px-3 py-1.5 rounded-lg text-white text-xs transition-all duration-300 btn-animate">
                     登录
                 </button>
-                <button onclick="showRegisterModal()" class="bg-amber-700/30 hover:bg-amber-600/50 border border-amber-600/50 px-4 py-2 rounded-lg text-amber-300 text-sm transition-all duration-300 btn-animate">
+                <button onclick="showRegisterModal()" class="bg-amber-700/30 hover:bg-amber-600/50 border border-amber-600/50 px-3 py-1.5 rounded-lg text-amber-300 text-xs transition-all duration-300 btn-animate">
                     注册
                 </button>
             </div>
             
-            <div id="user-profile" class="flex items-center gap-3 hidden">
-                <div class="text-sm text-amber-300 flex items-center">
+            <div id="user-profile" class="flex items-center gap-2 hidden">
+                <div class="text-xs text-amber-300 flex items-center">
                     <span id="username-display"></span>
-                    <span class="ml-2 px-2 py-0.5 bg-amber-900/50 rounded-full text-xs">
+                    <span class="ml-1 px-1.5 py-0.5 bg-amber-900/50 rounded-full text-xs">
                         绩分: <span id="points-display">0</span>
                     </span>
                 </div>
-                <button onclick="logout()" class="text-amber-500 hover:text-amber-300 text-sm transition-colors duration-300">
+                <button onclick="logout()" class="text-amber-500 hover:text-amber-300 text-xs transition-colors duration-300">
                     <i class="fa fa-sign-out"></i>
                 </button>
             </div>
             
-            <button onclick="document.getElementById('db-upload').click()" class="bg-amber-900/50 hover:bg-amber-800/70 px-4 py-2 rounded-lg text-white text-sm transition-all duration-300 btn-animate">
-                <i class="fa fa-cloud-upload mr-2"></i>贡献文学因子
+            <button onclick="document.getElementById('db-upload').click()" class="bg-amber-900/50 hover:bg-amber-800/70 px-3 py-1.5 rounded-lg text-white text-xs transition-all duration-300 btn-animate">
+                <i class="fa fa-cloud-upload mr-1"></i>贡献文学因子
             </button>
             <input type="file" id="db-upload" accept=".txt,.md" class="hidden" multiple onchange="contributeLiterature(this)">
             
-            <button onclick="saveNovelMemory()" class="bg-green-800/50 hover:bg-green-700/70 px-4 py-2 rounded-lg text-white text-sm transition-all duration-300 btn-animate">
-                <i class="fa fa-save mr-2"></i>保存记忆
+            <button onclick="saveNovelMemory()" class="bg-green-800/50 hover:bg-green-700/70 px-3 py-1.5 rounded-lg text-white text-xs transition-all duration-300 btn-animate">
+                <i class="fa fa-save mr-1"></i>保存记忆
             </button>
-            <button onclick="loadNovelMemory()" class="bg-blue-800/50 hover:bg-blue-700/70 px-4 py-2 rounded-lg text-white text-sm transition-all duration-300 btn-animate">
-                <i class="fa fa-history mr-2"></i>读取记忆
+            <button onclick="loadNovelMemory()" class="bg-blue-800/50 hover:bg-blue-700/70 px-3 py-1.5 rounded-lg text-white text-xs transition-all duration-300 btn-animate">
+                <i class="fa fa-history mr-1"></i>读取记忆
+            </button>
+            <button onclick="openWorldlineModal()" class="bg-purple-800/50 hover:bg-purple-700/70 px-3 py-1.5 rounded-lg text-white text-xs transition-all duration-300 btn-animate">
+                <i class="fa fa-sitemap mr-1"></i>世界线管理
             </button>
         </div>
     </nav>
@@ -448,6 +451,62 @@
             </div>
         </div>
     </div>
+    
+    <!-- 抉择点模态框 -->
+    <div id="decision-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-[100] hidden">
+        <div class="bg-gradient-to-br from-amber-900/30 to-black/80 border border-amber-500/50 p-8 rounded-xl max-w-lg w-full m-4 shadow-2xl shadow-amber-900/10">
+            <h3 class="text-2xl text-amber-400 mb-6 font-bold flex items-center">
+                <i class="fa fa-fork mr-2"></i>命运的抉择
+            </h3>
+            <p class="text-amber-200 mb-6">每一个选择都将改变故事的走向，你将如何抉择？</p>
+            
+            <div class="space-y-4 mb-6">
+                <div onclick="selectDecision(0)" class="decision-option p-4 bg-black/60 border border-amber-700/50 rounded-lg hover:bg-amber-900/30 cursor-pointer transition-all duration-300">
+                    <div class="font-bold text-amber-400 mb-2">顺势而为</div>
+                    <div id="decision-option-0" class="text-white">选项1</div>
+                </div>
+                <div onclick="selectDecision(1)" class="decision-option p-4 bg-black/60 border border-amber-700/50 rounded-lg hover:bg-amber-900/30 cursor-pointer transition-all duration-300">
+                    <div class="font-bold text-amber-400 mb-2">剑走偏锋</div>
+                    <div id="decision-option-1" class="text-white">选项2</div>
+                </div>
+                <div onclick="selectDecision(2)" class="decision-option p-4 bg-black/60 border border-amber-700/50 rounded-lg hover:bg-amber-900/30 cursor-pointer transition-all duration-300">
+                    <div class="font-bold text-amber-400 mb-2">意外变数</div>
+                    <div id="decision-option-2" class="text-white">选项3</div>
+                </div>
+                <div onclick="showCustomDecision()" class="decision-option p-4 bg-black/60 border border-amber-700/50 rounded-lg hover:bg-amber-900/30 cursor-pointer transition-all duration-300">
+                    <div class="font-bold text-amber-400 mb-2">执笔改命</div>
+                    <div class="text-white">自定义选项</div>
+                </div>
+            </div>
+            
+            <div id="custom-decision-section" class="hidden mb-6">
+                <textarea id="custom-decision-input" class="w-full h-24 bg-black/60 border border-amber-700/50 p-4 text-white rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all duration-300" placeholder="输入你自己的选择..."></textarea>
+                <button onclick="submitCustomDecision()" class="w-full bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 py-2 rounded-lg font-bold text-white transition-all duration-300 btn-animate">
+                    <i class="fa fa-magic mr-2"></i>确认自定义选择
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 世界线管理模态框 -->
+    <div id="worldline-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-[100] hidden">
+        <div class="bg-gradient-to-br from-amber-900/30 to-black/80 border border-amber-500/50 p-8 rounded-xl max-w-4xl w-full m-4 shadow-2xl shadow-amber-900/10 max-h-[80vh] overflow-y-auto">
+            <h3 class="text-2xl text-amber-400 mb-6 font-bold flex items-center">
+                <i class="fa fa-sitemap mr-2"></i>世界线管理
+            </h3>
+            <p class="text-amber-200 mb-6">命运的分叉路口，每一个选择都创造了新的可能...</p>
+            
+            <div id="worldline-tree" class="mb-6">
+                <!-- 世界线树状图将在这里动态生成 -->
+            </div>
+            
+            <div class="flex justify-end gap-4">
+                <button onclick="closeWorldlineModal()" class="px-6 py-2 bg-black/60 hover:bg-black/80 border border-amber-700/50 rounded-lg font-bold text-amber-300 transition-all duration-300 btn-animate">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div id="login-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-[100] hidden">
         <div class="bg-gradient-to-br from-amber-900/30 to-black/80 border border-amber-500/50 p-8 rounded-xl max-w-md w-full m-4 shadow-2xl shadow-amber-900/10">
@@ -517,7 +576,14 @@
             totalWordCount: 0,
             globalMemory: [],
             currentChapterContent: "",
-            userInput: ""
+            userInput: "",
+            // 抉择点引导相关
+            decisionOptions: [],
+            currentDecision: null,
+            // 世界线管理相关
+            worldLines: [],
+            currentWorldLine: 0,
+            decisionHistory: []
         };
 
         const MODEL = "deepseek-r1:8b";
@@ -794,9 +860,14 @@
             while (gameState.infiniteMode) {
                 if (!gameState.isPaused) {
                     await startChapter();
-                    gameState.globalChapter++;
-                    updateStats();
-                    await new Promise(r => setTimeout(r, 2000));
+                    // 只有在用户做出决策后才增加章节数
+                    if (gameState.currentDecision) {
+                        gameState.globalChapter++;
+                        updateStats();
+                        // 重置当前决策
+                        gameState.currentDecision = null;
+                    }
+                    await new Promise(r => setTimeout(r, 1000));
                 } else {
                     await new Promise(r => setTimeout(r, 1000));
                 }
@@ -867,11 +938,191 @@
             document.getElementById('memory-display').innerText = "最新记忆：" + (gameState.globalMemory[gameState.globalMemory.length-1] || "空");
         }
 
+        // 抉择点引导相关函数
+        async function generateDecisions() {
+            const prompt = `基于当前剧情：${gameState.globalMemory.join(';')}，生成三个具有文学冲突感的选择，分别代表"顺势而为"、"剑走偏锋"和"意外变数"。请以JSON格式输出，例如：{"option1": "选项1内容", "option2": "选项2内容", "option3": "选项3内容"}。`;
+            
+            try {
+                const result = await fetchLLM(prompt);
+                // 解析JSON响应
+                const decisions = JSON.parse(result);
+                gameState.decisionOptions = [decisions.option1, decisions.option2, decisions.option3];
+                return true;
+            } catch (error) {
+                console.error('生成抉择失败:', error);
+                // 生成默认抉择
+                gameState.decisionOptions = [
+                    "按照原定计划继续前进",
+                    "采取大胆冒险的行动",
+                    "遭遇意外事件干扰"
+                ];
+                return false;
+            }
+        }
+        
+        function showDecisionModal() {
+            // 更新抉择选项
+            for (let i = 0; i < 3; i++) {
+                document.getElementById(`decision-option-${i}`).textContent = gameState.decisionOptions[i];
+            }
+            
+            // 隐藏自定义抉择部分
+            document.getElementById('custom-decision-section').classList.add('hidden');
+            
+            // 显示模态框
+            document.getElementById('decision-modal').classList.remove('hidden');
+        }
+        
+        function selectDecision(index) {
+            gameState.currentDecision = gameState.decisionOptions[index];
+            document.getElementById('decision-modal').classList.add('hidden');
+            // 保存决策历史
+            saveDecisionHistory(gameState.currentDecision);
+            // 继续生成下一章
+            gameState.isPaused = false;
+        }
+        
+        function showCustomDecision() {
+            document.getElementById('custom-decision-section').classList.remove('hidden');
+        }
+        
+        function submitCustomDecision() {
+            const customDecision = document.getElementById('custom-decision-input').value;
+            if (customDecision) {
+                gameState.currentDecision = customDecision;
+                document.getElementById('decision-modal').classList.add('hidden');
+                // 保存决策历史
+                saveDecisionHistory(gameState.currentDecision);
+                // 继续生成下一章
+                gameState.isPaused = false;
+            }
+        }
+        
+        // 世界线管理相关函数
+        function openWorldlineModal() {
+            generateWorldlineTree();
+            document.getElementById('worldline-modal').classList.remove('hidden');
+        }
+        
+        function closeWorldlineModal() {
+            document.getElementById('worldline-modal').classList.add('hidden');
+        }
+        
+        function generateWorldlineTree() {
+            const treeContainer = document.getElementById('worldline-tree');
+            
+            if (gameState.decisionHistory.length === 0) {
+                treeContainer.innerHTML = '<p class="text-amber-200">暂无决策历史，开始你的冒险吧！</p>';
+                return;
+            }
+            
+            let treeHTML = '<div class="worldline-tree">';
+            
+            gameState.decisionHistory.forEach((decision, index) => {
+                treeHTML += `
+                    <div class="worldline-node p-4 bg-black/60 border border-amber-700/50 rounded-lg mb-4 hover:bg-amber-900/30 transition-all duration-300">
+                        <div class="font-bold text-amber-400 mb-2">第${index + 1}章 决策点</div>
+                        <div class="text-white mb-2">${decision.option}</div>
+                        <div class="text-xs text-amber-500">${decision.timestamp}</div>
+                        <button onclick="jumpToWorldline(${index})" class="mt-2 px-3 py-1 bg-blue-900/50 hover:bg-blue-800/70 text-white rounded text-xs transition-colors duration-300">
+                            跳转到此处
+                        </button>
+                    </div>
+                `;
+            });
+            
+            treeHTML += '</div>';
+            treeContainer.innerHTML = treeHTML;
+        }
+        
+        function jumpToWorldline(index) {
+            // 跳转到指定世界线节点
+            if (index >= 0 && index < gameState.decisionHistory.length) {
+                const decision = gameState.decisionHistory[index];
+                // 这里可以实现跳转到指定节点的逻辑
+                showNotification(`跳转到第${index + 1}章决策点`, 'success');
+                closeWorldlineModal();
+            }
+        }
+        
+        function saveDecisionHistory(option) {
+            const decision = {
+                chapter: gameState.globalChapter,
+                option: option,
+                timestamp: new Date().toLocaleString(),
+                memory: [...gameState.globalMemory]
+            };
+            
+            gameState.decisionHistory.push(decision);
+            // 保存到本地存储
+            localStorage.setItem('peanut_decision_history', JSON.stringify(gameState.decisionHistory));
+        }
+        
+        function loadDecisionHistory() {
+            const saved = localStorage.getItem('peanut_decision_history');
+            if (saved) {
+                gameState.decisionHistory = JSON.parse(saved);
+            }
+        }
+        
+        // 修改startChapter函数，在章节结束时生成抉择选项
+        async function startChapter() {
+            const seed = document.getElementById('story-seed').value || "新的冒险开始了";
+            // 蚁群算法逻辑应用：从文学数据库随机抽取因子作为启发信息
+            const litFactor = await getRandomLiteratureSnippet();
+            
+            const plotStage = document.getElementById('plot-stage');
+            plotStage.innerText = "状态：蚂蚁寻路中...";
+            plotStage.className = 'text-xs text-blue-400 mt-2 mb-3 p-2 rounded bg-blue-900/20 border border-blue-900/30';
+            
+            // 构建包含用户决策的提示
+            let decisionContext = "";
+            if (gameState.currentDecision) {
+                decisionContext = `。用户决策：${gameState.currentDecision}`;
+            }
+            
+            const branchPrompt = `根据历史：${gameState.globalMemory.join(';')}${decisionContext}。当前引子：${seed}。${litFactor ? '参考文学因子风格：' + litFactor : ''}。规划3个不同走向，用|分隔。`;
+            const branchesRaw = await fetchLLM(branchPrompt);
+            const branches = branchesRaw.split('|').map(b => b.trim()).filter(b => b);
+
+            let bestBranch = branches[0];
+            if (branches.length > 1) {
+                const evalPrompt = `从以下走向中选出逻辑最连贯且精彩的一个并只返回内容：\n${branches.join('\n')}`;
+                bestBranch = await fetchLLM(evalPrompt);
+            }
+
+            plotStage.innerText = "状态：生成中...";
+            plotStage.className = 'text-xs text-green-400 mt-2 mb-3 p-2 rounded bg-green-900/20 border border-green-900/30';
+            
+            const titlePrompt = `续写章节标题。上下文：${gameState.globalMemory.slice(-2)}${decisionContext}。走向：${bestBranch}。只返回"第X章：XXX"格式。`;
+            const title = await fetchLLM(titlePrompt);
+            renderElement('h2', 'chapter-title text-2xl font-bold mt-8 mb-4 text-center pb-2', title);
+
+            const plotPrompt = `续写小说正文。摘要：${gameState.globalMemory.join(';')}${decisionContext}。情节：${bestBranch}。${gameState.userInput ? '干预：' + gameState.userInput : ''}。直接输出正文。`;
+            const content = await fetchLLM(plotPrompt, true, renderBlock('story-content p-2 mb-4'));
+            
+            gameState.globalMemory.push(content.substring(0, 100) + "...");
+            if (gameState.globalMemory.length > 5) gameState.globalMemory.shift();
+            gameState.userInput = "";
+            
+            plotStage.innerText = "状态：完成";
+            plotStage.className = 'text-xs text-amber-400 mt-2 mb-3 p-2 rounded bg-amber-900/20 border border-amber-900/30';
+            
+            // 章节结束后生成抉择选项
+            await generateDecisions();
+            // 暂停游戏状态
+            gameState.isPaused = true;
+            // 显示抉择模态框
+            setTimeout(showDecisionModal, 1000);
+        }
+        
         // 页面加载完成后初始化
         window.onload = function() {
             checkOllamaStatus();
             // 加载硅基流动API Key
             loadSiliconApiKey();
+            // 加载决策历史
+            loadDecisionHistory();
             // 检查用户登录状态
             checkUserStatus();
             // 添加淡入动画
